@@ -1,8 +1,11 @@
-# Account Service
+# Secure Digital Wallet & Payment Switch
 ## 🚀 Introduction
-The Account Service is a microservice responsible for managing bank accounts. It provides APIs for creating, retrieving, updating, and deleting accounts.
+The **Secure Digital Wallet & Payment Switch** is the core engine responsible for managing digital wallets, processing high-frequency transactions, and ensuring secure fund transfers.
 
-> **New Feature**: This service is now architected for **High-Frequency Trading**, supporting 1,000+ TPS with strict ACID compliance using Pessimistic Locking and Serializable Isolation.
+> **Key Capabilities**:
+> *   **High-Frequency Trading Engine**: Supports 1,000+ TPS with strict ACID compliance.
+> *   **Bank-Grade Security**: Integrated JWT security for all critical operations.
+> *   **Concurrency Control**: Pessimistic Locking ensures data integrity for 500+ concurrent users.
 
 ## 📚 Table of Contents
 - [📂 Project Structure](#-project-structure)
@@ -32,9 +35,9 @@ The Account Service is a microservice responsible for managing bank accounts. It
 
 
 ## 📂 Project Structure
-The project structure of the Account Service is as follows:
+The project structure of the Digital Wallet Service is as follows:
 ```
-Account Service
+Wallet Service
 ├── src
 │   ├── main
 │   │   ├── java
@@ -87,10 +90,10 @@ Lombok is a Java library that helps to reduce boilerplate code by generating com
 
 ## 🔗 API Endpoints
 
-### 🏦 Create Account
+### 🏦 Create Wallet
 - **URL:** `/accounts`
 - **Method:** `POST`
-- **Description:** Creates a new account.
+- **Description:** Creates a new digital wallet.
 - **Request Body:**
     ```json
     {
@@ -110,10 +113,10 @@ Lombok is a Java library that helps to reduce boilerplate code by generating com
     }
     ```
 
-### 🔍 Get Account Details
+### 🔍 Get Wallet Details
 - **URL:** `/accounts/{accountId}`
 - **Method:** `GET`
-- **Description:** Retrieves account details by account ID.
+- **Description:** Retrieves wallet details by ID.
 - **Response:**
     ```json
     {
@@ -173,15 +176,15 @@ Lombok is a Java library that helps to reduce boilerplate code by generating com
 ### 💰 Deposit
 - **URL:** `/accounts/deposit`
 - **Method:** `POST`
-- **Description:** Deposits an amount into the account. **Thread-safe** and **ACID compliant**.
-- **Parameters:** `accountNumber`, `amount`
+- **Description:** Deposits funds into the wallet. **Thread-safe** and **ACID compliant**.
+- **Parameters:** `accountNumber` (Wallet ID), `amount`
 - **Response:** `200 OK`
 
 ### 💸 Withdraw
 - **URL:** `/accounts/withdraw`
 - **Method:** `POST`
-- **Description:** Withdraws an amount from the account. **Thread-safe** and **ACID compliant**.
-- **Parameters:** `accountNumber`, `amount`
+- **Description:** Withdraws funds from the wallet. **Thread-safe** and **ACID compliant**.
+- **Parameters:** `accountNumber` (Wallet ID), `amount`
 - **Response:** `200 OK`
 
 ## ⚠️ Error Handling
@@ -218,3 +221,5 @@ To run tests using the included Maven Wrapper:
 
 ## 🚀 Build and Deployment
 The project uses Maven for build automation and dependency management. The service can be packaged as a Docker container for deployment in a containerized environment.
+
+👉 **[See Deployment Guide](DEPLOYMENT.md)** for detailed instructions on how to run with Docker or locally.
