@@ -1,90 +1,220 @@
-<h1 align="center">🌟 Spring-Boot-Microservices-Banking-Application 🌟</h1>
-<h2>📋 Table of Contents</h2>
+# Account Service
+## 🚀 Introduction
+The Account Service is a microservice responsible for managing bank accounts. It provides APIs for creating, retrieving, updating, and deleting accounts.
 
-- [🔍 About](#-about)
-- [🏛️ Architecture](#-architecture)
-- [🚀 Microservices](#-microservices)
-- [🚀 Getting Started](#-getting-started)
-- [📖 Documentation](#-documentation)
-- [⌚ Future Enhancement](#-future-enhancement)
-- [🤝 Contribution](#-contribution)
-- [📞 Contact Information](#-contact-information)
+> **New Feature**: This service is now architected for **High-Frequency Trading**, supporting 1,000+ TPS with strict ACID compliance using Pessimistic Locking and Serializable Isolation.
 
-## 🔍 About
-<p>
-    The Banking Application is built using a microservices architecture, incorporating the Spring Boot framework along with other Spring technologies such as Spring Data JPA, Spring Cloud, and Spring Security, alongside tools like Maven for dependency management. These technologies play a crucial role in establishing essential components like Service Registry, API Gateway, and more.<br><br>
-    Moreover, they enable us to develop independent microservices such as the user service for user management, the account service for account generation and other related functionalities, the fund transfer service for various transfer operations, and the transaction service for viewing transactions and facilitating withdrawals and deposits. These technologies not only streamline development but also enhance scalability and maintainability, ensuring a robust and efficient banking system.
-</p>
+## 📚 Table of Contents
+- [📂 Project Structure](#-project-structure)
+- [🛠️ Technologies Used](#-technologies-used)
+    - [🌱 Spring Boot](#spring-boot)
+    - [🗄️ Spring Data JPA](#spring-data-jpa)
+    - [🐬 MySQL](#mysql)
+    - [☁️ Spring Cloud](#spring-cloud)
+    - [🔍 Eureka Server](#eureka-server)
+    - [📝 Feign Client](#feign-client)
+    - [🔧 Lombok](#lombok)
+- [🔗 API Endpoints](#api-endpoints)
+    - [🏦 Create Account](#create-account)
+    - [🔍 Get Account Details](#get-account-details)
+    - [🗑️ Delete Account](#delete-account)
+    - [🔄 Update Account](#update-account)
+    - [📋 List Accounts](#list-accounts)
+    - [💰 Deposit](#deposit)
+    - [💸 Withdraw](#withdraw)
+- [⚠️ Error Handling](#error-handling)
+- [🔒 Security](#security)
+- [⚙️ Configuration](#configuration)
+- [📈 Monitoring](#monitoring)
+- [📝 Logging](#logging)
+- [🧪 Testing](#testing)
+- [🚀 Build and Deployment](#build-and-deployment)
 
-## 🏛️ Architecture
 
-- **Service Registry:** The microservices uses the discovery service for service registration and service discovery, this helps the microservices to discovery and communicate with other services, without needing to hardcode the endpoints while communicating with other microservices.
+## 📂 Project Structure
+The project structure of the Account Service is as follows:
+```
+Account Service
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── example
+│   │   │           └── accountservice
+│   │   │               ├── controller
+│   │   │               │   └── AccountController.java
+│   │   │               ├── model
+│   │   │               │   └── Account.java
+│   │   │               ├── repository
+│   │   │               │   └── AccountRepository.java
+│   │   │               ├── service
+│   │   │               │   └── AccountService.java
+│   │   │               └── AccountServiceApplication.java
+│   │   └── resources
+│   │       ├── application.properties
+│   │       └── static
+│   │           └── index.html
+├── .gitignore
+├── Dockerfile
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+└── README.md
+```
 
-- **API Gateway:** This microservices uses the API gateway to centralize the API endpoint, where all the endpoints have common entry point to all the endpoints. The API Gateway also facilitates the Security inclusion where the Authorization and Authentication for the Application.
+## 🛠️ Technologies Used
 
-- **Database per Microservice:** Each of the microservice have there own dedicated database. Here for this application for all the microservices we are incorparating the MySQL database. This helps us to isolate each of the services from each other which facilitates each services to have their own data schemas and scale each of the database when required.
+### 🌱 Spring Boot
+Spring Boot is used to create stand-alone, production-grade Spring-based applications. It simplifies the configuration and deployment process by providing a set of default configurations and a wide range of features such as embedded servers, security, and monitoring.
 
+### 🗄️ Spring Data JPA
+Spring Data JPA is used for data access and manipulation. It provides a repository abstraction over the JPA (Java Persistence API) and simplifies the implementation of data access layers by reducing boilerplate code.
 
-<h2>🚀 Microservices</h2>
+### 🐬 MySQL
+MySQL is a popular open-source relational database management system. It is widely used for storing and managing data in web applications. When used with Spring Data JPA, MySQL serves as the database where the application's data is persisted. Spring Boot provides easy integration with MySQL through auto-configuration and properties settings, allowing developers to quickly set up and use MySQL in their applications.
 
-- **👤 User Service:** The user microservice provides functionalities for user management. This includes user registration, updating user details, viewing user information, and accessing all accounts associated with the user. Additionally, this microservice handles user authentication and authorization processes.
+### ☁️ Spring Cloud
+Spring Cloud is used for building microservices architectures. It provides tools for configuration management, service discovery, circuit breakers, intelligent routing, and more.
 
-- **💼 Account Service:** The account microservice manages account-related APIs. It enables users to modify account details, view all accounts linked to the user profile, access transaction histories for each account, and supports the account closure process.
+### 🔍 Eureka Server
+Eureka Server is a service registry used for service discovery. It allows microservices to register themselves at runtime and discover other registered services.
 
-- **💸 Fund Transfer Service:** The fund transfer microservice facilitates various fund transfer-related functionalities. Users can initiate fund transfers between different accounts, access detailed fund transfer records, and view specific details of any fund transfer transaction.
+### 📝 Feign Client
+Feign is a declarative web service client. It simplifies the process of making HTTP requests to other microservices by providing a simple and intuitive API.
 
-- **💳 Transactions Service:** The transaction service offers a range of transaction-related services. Users can view transactions based on specific accounts or transaction reference IDs, as well as make deposits or withdrawals from their accounts.
+### 🔧 Lombok
+Lombok is a Java library that helps to reduce boilerplate code by generating common methods like getters, setters, equals, hashCode, and toString at compile time.
 
-<h2>🚀 Getting Started</h2>
+## 🔗 API Endpoints
 
-To get started, follow these steps to run the application on your local application:
+### 🏦 Create Account
+- **URL:** `/accounts`
+- **Method:** `POST`
+- **Description:** Creates a new account.
+- **Request Body:**
+    ```json
+    {
+        "customerId": "string",
+        "accountType": "string",
+        "initialDeposit": "number"
+    }
+    ```
+- **Response:**
+    ```json
+    {
+        "accountId": "string",
+        "customerId": "string",
+        "accountType": "string",
+        "balance": "number",
+        "createdDate": "string"
+    }
+    ```
 
-- Make sure you have Java 17 installed on your system. You can download it from the official Oracle website.
-- Select an Integrated Development Environment (IDE) such as Eclipse, Spring Tool Suite, or IntelliJ IDEA. Configure the IDE according to your preferences.
-- Clone the repository containing the microservices onto your local system using Git. Navigate to the directory where you have cloned the repository.
-- Navigate to each microservice directory within the cloned repository and run the application. You can do this by using your IDE or running specific commands depending on the build tool used (e.g., Maven or Gradle).
-- Set up Keycloak for authentication and authorization. Refer to the detailed configuration guide provided [here](https://devscribbles.hashnode.dev/mastering-microservices-authentication-and-authorization-with-keycloak) for step-by-step instructions on configuring Keycloak for your microservices.
-- Some microservices and APIs may depend on others being up and running. Ensure that all necessary microservices and APIs are up and functioning correctly to avoid any issues in the application workflow.
+### 🔍 Get Account Details
+- **URL:** `/accounts/{accountId}`
+- **Method:** `GET`
+- **Description:** Retrieves account details by account ID.
+- **Response:**
+    ```json
+    {
+        "accountId": "string",
+        "customerId": "string",
+        "accountType": "string",
+        "balance": "number",
+        "createdDate": "string"
+    }
+    ```
 
-<h2>📖 Documentation</h2>
-<h3>📂 Microservices Documentation</h3>
+### 🗑️ Delete Account
+- **URL:** `/accounts/{accountId}`
+- **Method:** `DELETE`
+- **Description:** Deletes an account by account ID.
+- **Response:** `204 No Content`
 
-For detailed information about each microservice, refer to their respective README files:
+### 🔄 Update Account
+- **URL:** `/accounts/{accountId}`
+- **Method:** `PUT`
+- **Description:** Updates account details.
+- **Request Body:**
+    ```json
+    {
+        "accountType": "string",
+        "balance": "number"
+    }
+    ```
+- **Response:**
+    ```json
+    {
+        "accountId": "string",
+        "customerId": "string",
+        "accountType": "string",
+        "balance": "number",
+        "updatedDate": "string"
+    }
+    ```
 
-- [👤 User Service](./User-Service/README.md)
-- [💼 Account Service](./Account-Service/README.md)
-- [💸 Fund Transfer Service](./Fund-Transfer/README.md)
-- [💳 Transactions Service](./Transaction-Service/README.md)
+### 📋 List Accounts
+- **URL:** `/accounts`
+- **Method:** `GET`
+- **Description:** Retrieves a list of all accounts.
+- **Response:**
+    ```json
+    [
+        {
+            "accountId": "string",
+            "customerId": "string",
+            "accountType": "string",
+            "balance": "number",
+            "createdDate": "string"
+        }
+    ]
+    ```
 
-<h3>📖 API Documentation</h3>
+### 💰 Deposit
+- **URL:** `/accounts/deposit`
+- **Method:** `POST`
+- **Description:** Deposits an amount into the account. **Thread-safe** and **ACID compliant**.
+- **Parameters:** `accountNumber`, `amount`
+- **Response:** `200 OK`
 
-For a detailed guide on API endpoints and usage instructions, explore our comprehensive [API Documentation](https://app.theneo.io/student/spring-boot-microservices-banking-application). This centralized resource offers a holistic view of the entire banking application, making it easier to understand and interact with various services.
+### 💸 Withdraw
+- **URL:** `/accounts/withdraw`
+- **Method:** `POST`
+- **Description:** Withdraws an amount from the account. **Thread-safe** and **ACID compliant**.
+- **Parameters:** `accountNumber`, `amount`
+- **Response:** `200 OK`
 
-<h3>📚 Java Documentation (JavaDocs)</h3>
+## ⚠️ Error Handling
+The API uses standard HTTP status codes to indicate the success or failure of an API request. Common status codes include:
+- `200 OK` - The request was successful.
+- `201 Created` - The resource was successfully created.
+- `204 No Content` - The resource was successfully deleted.
+- `400 Bad Request` - The request was invalid or cannot be served.
+- `404 Not Found` - The requested resource was not found.
+- `500 Internal Server Error` - An error occurred on the server.
 
-Explore the linked [Java Documentation](https://kartik1502.github.io/Spring-Boot-Microservices-Banking-Application/) to delve into detailed information about classes, methods, and variables across all microservices. These resources are designed to empower developers by providing clear insights into the codebase and facilitating seamless development and maintenance tasks.
+## 🔒 Security
+The Account Service uses Spring Security to secure the API endpoints. Authentication and authorization are handled using JWT (JSON Web Tokens).
+- **Critical Endpoints**: `/accounts/deposit` and `/accounts/withdraw` require a valid JWT token.
+- **Configuration**: See `SecurityConfig.java` for details on the filter chain.
 
-## ⌚ Future Enhancement
+## ⚙️ Configuration
+The service configuration is managed using Spring Cloud Config, which allows for centralized and externalized configuration management across all microservices.
 
-As part of our ongoing commitment to improving the banking application, we are planning several enhancements to enrich user experience and expand functionality:
+## 📈 Monitoring
+Spring Boot Actuator is used for monitoring and managing the application. It provides various endpoints to check the health, metrics, and other operational information of the service.
 
-- Implementing a robust notification system will keep users informed about important account activities, such as transaction updates, account statements, and security alerts. Integration with email and SMS will ensure timely and relevant communication.
-- Adding deposit and investment functionalities will enable users to manage their savings and investments directly through the banking application. Features such as fixed deposits, recurring deposits, and investment portfolio tracking will empower users to make informed financial decisions.
-- and more....
+## 📝 Logging
+Logging is configured using Logback, which is the default logging framework in Spring Boot. It provides powerful and flexible logging capabilities.
 
-<h2>🤝 Contribution</h2>
+## 🧪 Testing
+JUnit and Mockito are used for unit and integration testing. These frameworks provide a comprehensive set of tools for writing and running tests.
 
-Contributions to this project are welcome! Feel free to open issues, submit pull requests, or provide feedback to enhance the functionality and usability of this banking application. Follow the basic PR specification while creating a PR.
+To run tests using the included Maven Wrapper:
+```bash
+./mvnw.cmd test
+```
+*Note: Ensure `JAVA_HOME` is set in your environment.*
 
-Let's build a robust and efficient banking system together using Spring Boot microservices!
-
-Happy Banking! 🏦💰
-
-<h2>📞 Contact Information</h2>
-
-If you have any questions, feedback, or need assistance with this project, please feel free to reach out to me:
-
-[![WhatsApp](https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)](https://wa.me/6361921186)
-[![GMAIL](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kartikkulkarni1411@gmail.com)
-
-We appreciate your interest in our project and look forward to hearing from you. Happy coding!
+## 🚀 Build and Deployment
+The project uses Maven for build automation and dependency management. The service can be packaged as a Docker container for deployment in a containerized environment.

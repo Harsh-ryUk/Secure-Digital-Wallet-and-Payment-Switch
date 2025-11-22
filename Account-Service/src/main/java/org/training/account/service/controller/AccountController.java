@@ -109,16 +109,29 @@ public class AccountController {
     @GetMapping("/{userId}")
     public ResponseEntity<AccountDto> readAccountByUserId(@PathVariable Long userId){
         return ResponseEntity.ok(accountService.readAccountByUserId(userId));
+    }
 
+    /**
+     * Deposits an amount into the account.
+     *
+     * @param accountNumber The account number.
+     * @param amount        The amount to deposit.
+     * @return The response entity with the result of the deposit.
+     */
+    @PostMapping("/deposit")
+    public ResponseEntity<Response> deposit(@RequestParam String accountNumber, @RequestParam java.math.BigDecimal amount) {
+        return ResponseEntity.ok(accountService.deposit(accountNumber, amount));
+    }
 
-
-
-
-
-
-
-
-
-
+    /**
+     * Withdraws an amount from the account.
+     *
+     * @param accountNumber The account number.
+     * @param amount        The amount to withdraw.
+     * @return The response entity with the result of the withdrawal.
+     */
+    @PostMapping("/withdraw")
+    public ResponseEntity<Response> withdraw(@RequestParam String accountNumber, @RequestParam java.math.BigDecimal amount) {
+        return ResponseEntity.ok(accountService.withdraw(accountNumber, amount));
     }
 }

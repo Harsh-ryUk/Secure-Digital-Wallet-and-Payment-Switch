@@ -74,4 +74,22 @@ public interface AccountService {
      * @return The account information as an AccountDto object
      */
     AccountDto readAccountByUserId(Long userId);
+
+    /**
+     * Deposits an amount into the account.
+     *
+     * @param accountNumber The account number.
+     * @param amount        The amount to deposit.
+     * @return The response indicating success or failure.
+     */
+    Response deposit(String accountNumber, java.math.BigDecimal amount);
+
+    /**
+     * Withdraws an amount from the account.
+     *
+     * @param accountNumber The account number.
+     * @param amount        The amount to withdraw.
+     * @return The response indicating success or failure.
+     */
+    Response withdraw(String accountNumber, java.math.BigDecimal amount);
 }
